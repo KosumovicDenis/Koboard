@@ -1,4 +1,4 @@
-module KosumovicDenis/Koboard
+module github.com/KosumovicDenis/Koboard
 
 go 1.22.4
 
