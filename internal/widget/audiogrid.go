@@ -2,7 +2,7 @@ package widget
 
 import (
     "fmt"
-    "time"
+    "strconv"
 
     "fyne.io/fyne/v2"
     "fyne.io/fyne/v2/container"
@@ -10,37 +10,32 @@ import (
     "fyne.io/fyne/v2/widget"
 )
 
+var audios = 0
+
 func CallFromInternalDir(str string) {
     fmt.Println(str)
 }
 
-func updateContent(clock *widget.Label) {
-    formatted := time.Now().Format("Time: 03:04:05")
-    clock.SetText(formatted)
+func updateContent(c *fyne.Container, audioNum int) {
+   c.Add(widget.NewLabel(strconv.Itoa(audioNum))) 
 }
 
 func DrawThings(a fyne.App) {
     w := a.NewWindow("Koboard")
     w.SetMaster()
 
-    clock := widget.NewLabel("")
-    updateContent(clock)
-
     w.Resize(fyne.NewSize(400, 80))
 
-    go func () {
-        for range time.Tick(time.Second) {
-            updateContent(clock)
-        }
-    } () 
+    c := container.New(layout.NewGridWrapLayout(fyne.NewSize(100,100)))
 
     button := widget.NewButton("Click mew", func() {
-        w2 := a.NewWindow("Hola chico")
-        w2.SetContent(widget.NewLabel("Yhep"))
-        w2.Show()
+        updateContent(c, audios)
+        audios++;
     })
 
-    w.SetContent(container.New(layout.NewVBoxLayout(), clock, button))
+    c.Add(button)
+
+    w.SetContent(c)
 
     w.Show()
 }
