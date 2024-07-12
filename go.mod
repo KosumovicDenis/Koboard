@@ -2,7 +2,10 @@ module github.com/KosumovicDenis/Koboard
 
 go 1.22.4
 
-require fyne.io/fyne/v2 v2.4.5
+require (
+	fyne.io/fyne/v2 v2.4.5
+	github.com/gordonklaus/portaudio v0.0.0-20230709114228-aafa478834f5
+)
 
 require (
 	fyne.io/systray v1.10.1-0.20231115130155-104f5ef7839e // indirect
