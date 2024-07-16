@@ -3,6 +3,7 @@ package widget
 import (
     "fmt"
     "strconv"
+    "time"
 
     "fyne.io/fyne/v2"
     "fyne.io/fyne/v2/container"
@@ -11,16 +12,14 @@ import (
 )
 
 var audios = 0
-
-func CallFromInternalDir(str string) {
-    fmt.Println(str)
-}
+var cps = 0
 
 func updateContent(c *fyne.Container, audioNum int) {
    c.Add(widget.NewLabel(strconv.Itoa(audioNum))) 
 }
 
 func DrawThings(a fyne.App) {
+    fmt.Println("Drawing app")
     w := a.NewWindow("Koboard")
     w.SetMaster()
 
@@ -32,6 +31,23 @@ func DrawThings(a fyne.App) {
         updateContent(c, audios)
         audios++;
     })
+
+    cpsLabel := widget.NewLabel("CPS -> 0")
+    c.Add(cpsLabel)
+    cpsButton := widget.NewButton("Cps counter", func() {
+        cps++;
+    })
+    c.Add(cpsButton)
+    
+    start := time.Now()
+
+    go func() {
+        for range time.Tick(time.Second) {
+            t := time.Now()
+            elasped := t.Sub(start)
+            cpsLabel.SetText(strconv.Itoa(cps / int(elasped.Seconds())));
+        }
+    } ()
 
     c.Add(button)
 

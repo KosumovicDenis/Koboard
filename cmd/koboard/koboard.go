@@ -9,15 +9,10 @@ import (
     "fyne.io/fyne/v2/app"
 )
 
-func main() {
-    fmt.Print("Calling internal function -> ")
-    widget.CallFromInternalDir("Funziona!!!")
-    
-    fmt.Println("---------------------------------")
+func main() {    
     fmt.Println(audio.GetVersion())
     audio.PlayAudio()
 
-    fmt.Println("Koboard")
     a := app.New()
     widget.DrawThings(a)
     a.Run()
