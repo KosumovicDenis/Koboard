@@ -66,5 +66,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 *Note: This project is still under development. Features and documentation will be updated as progress is made.*
 
 Feel free to reach out with any questions or feedback!
-
-Happy coding! 🎧
