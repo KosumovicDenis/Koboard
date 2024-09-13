@@ -1,21 +1,44 @@
 package widget
 
 import (
-    "fmt"
-    "strconv"
-    "time"
+	"fmt"
+	"strings"
 
-    "fyne.io/fyne/v2"
-    "fyne.io/fyne/v2/container"
-    "fyne.io/fyne/v2/layout"
-    "fyne.io/fyne/v2/widget"
+	"github.com/KosumovicDenis/Koboard/pkg/audio"
+
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/storage"
+	"fyne.io/fyne/v2/widget"
 )
 
 var audios = 0
-var cps = 0
 
-func updateContent(c *fyne.Container, audioNum int) {
-   c.Add(widget.NewLabel(strconv.Itoa(audioNum))) 
+func updateContent(c *fyne.Container, file_path string) {
+    path := strings.Split(file_path, "/")
+    audio_button := widget.NewButton(path[len(path) - 1] , func() {
+        go audio.PlayAudio(file_path)
+    })
+    audio_button.Resize(fyne.NewSize(100, 100))
+    c.Add(audio_button) 
+}
+
+func selectFile(w fyne.Window, c *fyne.Container) {
+    file_dialog := dialog.NewFileOpen(func (r fyne.URIReadCloser, err error) {
+        chk(err)
+        if r.URI() != nil {
+            updateContent(c, r.URI().Path())
+        } 
+    }, w)
+    file_dialog.SetFilter(storage.NewExtensionFileFilter([]string{".mp3"}))
+    file_dialog.Show()
+    file_dialog.SetOnClosed(func() {
+        w.Hide()
+    })
+    w.Show()
+    file_dialog.Resize(fyne.NewSize(700, 600))
 }
 
 func DrawThings(a fyne.App) {
@@ -23,35 +46,24 @@ func DrawThings(a fyne.App) {
     w := a.NewWindow("Koboard")
     w.SetMaster()
 
-    w.Resize(fyne.NewSize(400, 80))
+    w.Resize(fyne.NewSize(800, 800))
 
-    c := container.New(layout.NewGridWrapLayout(fyne.NewSize(100,100)))
+    c := container.New(layout.NewGridWrapLayout(fyne.NewSize(300,100)))
 
-    button := widget.NewButton("Click mew", func() {
-        updateContent(c, audios)
-        audios++;
+    openFileButton := widget.NewButton("Open audio file to use", func () {
+        w2 := a.NewWindow("Select mp3 file")
+        w2.Resize(fyne.NewSize(700, 600))
+        w2.SetFixedSize(true)
+        selectFile(w2, c)
     })
 
-    cpsLabel := widget.NewLabel("CPS -> 0")
-    c.Add(cpsLabel)
-    cpsButton := widget.NewButton("Cps counter", func() {
-        cps++;
-    })
-    c.Add(cpsButton)
-    
-    start := time.Now()
-
-    go func() {
-        for range time.Tick(time.Second) {
-            t := time.Now()
-            elasped := t.Sub(start)
-            cpsLabel.SetText(strconv.Itoa(cps / int(elasped.Seconds())));
-        }
-    } ()
-
-    c.Add(button)
+    c.Add(openFileButton)
 
     w.SetContent(c)
 
     w.Show()
+}
+
+func chk(err error) {
+    if err != nil { panic(err) }
 }

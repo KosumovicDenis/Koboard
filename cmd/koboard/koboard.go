@@ -11,7 +11,6 @@ import (
 
 func main() {    
     fmt.Println(audio.GetVersion())
-    audio.PlayAudio()
 
     a := app.New()
     widget.DrawThings(a)
