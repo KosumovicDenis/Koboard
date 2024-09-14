@@ -6,6 +6,7 @@ require (
 	fyne.io/fyne/v2 v2.5.1
 	github.com/bobertlo/go-mpg123 v0.0.0-20211210004329-c83f21a0fd39
 	github.com/gordonklaus/portaudio v0.0.0-20230709114228-aafa478834f5
+	google.golang.org/protobuf v1.26.0
 )
 
 require (
