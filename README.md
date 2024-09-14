@@ -46,7 +46,7 @@ Contributions are welcome! If you have suggestions for improvements, feel free t
 
 ## Roadmap 🛤️
 
-- [ ] Basic playback functionality
+- [x] Basic playback functionality
 - [ ] User interface for selecting and playing sounds
 - [ ] Configuration file support
 - [ ] Volume control
