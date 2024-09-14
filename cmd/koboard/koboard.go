@@ -11,8 +11,8 @@ import (
 )
 
 func main() {    
-    soundboard_data.NewSoundBoard("Prima soundboard")
-    soundboard_data.GetSoundBoard("Prima soundboard")
+    soundboard_data.InitSoundboard()
+    soundboard_data.GetSoundBoard()
     fmt.Println(audio.GetVersion())
 
     a := app.New()

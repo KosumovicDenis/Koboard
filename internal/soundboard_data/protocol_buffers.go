@@ -2,29 +2,30 @@ package soundboard_data
 
 import (
 	"os"
-	"strings"
 
 	"github.com/KosumovicDenis/Koboard/internal/model"
 	"google.golang.org/protobuf/proto"
 )
 
-func NewSoundBoard(name string) {
+func InitSoundboard() {
     soundboard := &model.Soundboard{
-        Id: 1,
-        Name: name,
-        Audios: []*model.Audio{
-            {Id: 1, Name: "Nome file", Path: "Path file"},
+        Profiles: []*model.Profile{
+            {
+                Id: 1,
+                Name: "ProfileName",
+                Audios: []*model.Audio{
+                    {Id: 1, Name: "FileName", Path: "/path/to/audio/file"},
+                },
+            },
         },
     }
     data, err := proto.Marshal(soundboard)
     chk(err)
-    filename := "soundboard_" + strings.ToLower(strings.ReplaceAll(name, " ", "_" )) + ".protobuf"
-    chk(os.WriteFile(filename, data, 0600))
+    chk(os.WriteFile("soundboard.protobuf", data, 0600))
 }
 
-func GetSoundBoard(name string) {
-    filename := "soundboard_" + strings.ToLower(strings.ReplaceAll(name, " ", "_" )) + ".protobuf"
-    data, err := os.ReadFile(filename)
+func GetSoundBoard() {
+    data, err := os.ReadFile("soundboard.protobuf")
     chk(err)
     soundboard := model.Soundboard{}
     err = proto.Unmarshal(data, &soundboard)

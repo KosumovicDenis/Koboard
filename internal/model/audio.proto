@@ -17,8 +17,13 @@ message Audio {
     int32 duration = 6;
 }
 
-message Soundboard {
+message Profile {
     int32 id = 1;
     string name = 2;
     repeated Audio audios = 3;
 }
+
+message Soundboard {
+    repeated Profile profiles = 1;
+}
+
