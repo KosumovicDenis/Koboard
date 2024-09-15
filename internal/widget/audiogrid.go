@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/KosumovicDenis/Koboard/internal/model"
+	"github.com/KosumovicDenis/Koboard/internal/soundboard"
 	"github.com/KosumovicDenis/Koboard/pkg/audio"
 
 	"fyne.io/fyne/v2"
@@ -16,29 +18,52 @@ import (
 
 var audios = 0
 
-func updateContent(c *fyne.Container, file_path string) {
-    path := strings.Split(file_path, "/")
-    audio_button := widget.NewButton(path[len(path) - 1] , func() {
-        go audio.PlayAudio(file_path)
-    })
-    audio_button.Resize(fyne.NewSize(100, 100))
-    c.Add(audio_button) 
+func updateContent(c *fyne.Container, audios *[]*model.Audio) {
+    for _, a := range *audios {        
+        audio_button := widget.NewButton(a.Name , func() {
+            go audio.PlayAudio(a.Path)
+        })
+        audio_button.Resize(fyne.NewSize(100, 100))
+        c.Add(audio_button) 
+    }
+}
+
+func addAudio(path string, c * fyne.Container) {
+    profiles := []*model.Profile{}
+    soundboard.GetProfiles(&profiles)
+    fmt.Println(path, c)
+    for _, p := range profiles {
+        if p.Active {
+            array_path := strings.Split(path, "/")
+            p.Audios = []*model.Audio{
+                {
+                    Id: 1,
+                    Name: array_path[len(array_path)-1],
+                    Path: path,
+                    Format: model.FileFormat_MP3,
+                },
+            }
+            updateContent(c, &p.Audios)
+        } 
+    }
 }
 
 func selectFile(w fyne.Window, c *fyne.Container) {
     file_dialog := dialog.NewFileOpen(func (r fyne.URIReadCloser, err error) {
         chk(err)
-        if r.URI() != nil {
-            updateContent(c, r.URI().Path())
+        if r != nil && r.URI() != nil {
+            addAudio(r.URI().Path(), c)
         } 
     }, w)
     file_dialog.SetFilter(storage.NewExtensionFileFilter([]string{".mp3"}))
+    w.Resize(fyne.NewSize(700, 600))
+    w.SetFixedSize(true)
+    w.Show()
+    file_dialog.Resize(fyne.NewSize(700, 600))
     file_dialog.Show()
     file_dialog.SetOnClosed(func() {
         w.Hide()
     })
-    w.Show()
-    file_dialog.Resize(fyne.NewSize(700, 600))
 }
 
 func DrawThings(a fyne.App) {
@@ -52,16 +77,34 @@ func DrawThings(a fyne.App) {
 
     openFileButton := widget.NewButton("Open audio file to use", func () {
         w2 := a.NewWindow("Select mp3 file")
-        w2.Resize(fyne.NewSize(700, 600))
-        w2.SetFixedSize(true)
         selectFile(w2, c)
     })
+
+    displayProfiles(c)
 
     c.Add(openFileButton)
 
     w.SetContent(c)
 
     w.Show()
+}
+
+func displayProfiles(c *fyne.Container) {
+    profiles := []*model.Profile{}
+    soundboard.GetProfiles(&profiles)
+    
+    list := widget.NewList(
+            func() int {
+                return len(profiles)
+            },
+            func() fyne.CanvasObject {
+                return widget.NewLabel("test")
+            },
+            func(i widget.ListItemID, o fyne.CanvasObject) {
+                o.(*widget.Label).SetText(profiles[i].GetName())
+            },
+        )
+    c.Add(list)
 }
 
 func chk(err error) {

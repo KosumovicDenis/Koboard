@@ -20,7 +20,8 @@ message Audio {
 message Profile {
     int32 id = 1;
     string name = 2;
-    repeated Audio audios = 3;
+    bool active = 3;
+    repeated Audio audios = 4;
 }
 
 message Soundboard {

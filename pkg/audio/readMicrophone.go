@@ -12,8 +12,6 @@ import (
 )
 
 func PlayAudio(audio_file string) { 
-	fmt.Println("Playing.  Press Ctrl-C to stop.")
-
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt, os.Kill)
 
