@@ -18,8 +18,8 @@ func StartSoundboard() {
         initSoundboard()
     } else {
         chk(err)
+        err = proto.Unmarshal(data, &soundboard_data)
     } 
-    err = proto.Unmarshal(data, &soundboard_data)
 }
 
 func GetProfiles(m *[]*model.Profile) {
@@ -27,7 +27,7 @@ func GetProfiles(m *[]*model.Profile) {
 }
 
 func initSoundboard() {
-    soundboard_data := &model.Soundboard{
+    soundboard_data = model.Soundboard{
         Profiles: []*model.Profile{
             {
                 Id: 1,
@@ -38,7 +38,7 @@ func initSoundboard() {
             },
         },
     }
-    data, err := proto.Marshal(soundboard_data)
+    data, err := proto.Marshal(&soundboard_data)
     chk(err)
     chk(os.WriteFile("soundboard.protobuf", data, 0600))
 }
