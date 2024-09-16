@@ -5,11 +5,14 @@ import (
 
 	"github.com/KosumovicDenis/Koboard/internal/soundboard"
 	"github.com/KosumovicDenis/Koboard/internal/widget"
+	"github.com/gordonklaus/portaudio"
 
 	"fyne.io/fyne/v2/app"
 )
 
 func main() {
+    portaudio.Initialize()
+    defer portaudio.Terminate()
     soundboard.StartSoundboard()
 
     a := app.New()

@@ -17,42 +17,52 @@ import (
 )
 
 var audios = 0
+var profiles []*model.Profile
+var audios_container *fyne.Container
 
-func updateContent(c *fyne.Container, audios *[]*model.Audio) {
-    for _, a := range *audios {        
+func updateAudiosConatiner(p *model.Profile) {
+    audios_container.RemoveAll()
+    for _, a := range p.GetAudios() {        
         audio_button := widget.NewButton(a.Name , func() {
             go audio.PlayAudio(a.Path)
         })
         audio_button.Resize(fyne.NewSize(100, 100))
-        c.Add(audio_button) 
+        audios_container.Add(audio_button) 
     }
 }
 
-func addAudio(path string, c * fyne.Container) {
-    profiles := []*model.Profile{}
+func displayAudios() {
     soundboard.GetProfiles(&profiles)
-    fmt.Println(path, c)
     for _, p := range profiles {
         if p.Active {
-            array_path := strings.Split(path, "/")
-            p.Audios = []*model.Audio{
-                {
-                    Id: 1,
-                    Name: array_path[len(array_path)-1],
-                    Path: path,
-                    Format: model.FileFormat_MP3,
-                },
-            }
-            updateContent(c, &p.Audios)
+            updateAudiosConatiner(p)
         } 
     }
 }
 
-func selectFile(w fyne.Window, c *fyne.Container) {
+func addAudio(path string) {
+    soundboard.GetProfiles(&profiles)
+    for _, p := range profiles {
+        if p.Active {
+            array_path := strings.Split(path, "/")
+            audio := &model.Audio{
+                    Id: 1,
+                    Name: array_path[len(array_path)-1],
+                    Path: path,
+                    Format: model.FileFormat_MP3,
+            }
+            p.Audios = append(p.Audios, audio)
+            updateAudiosConatiner(p)
+        } 
+    }
+    soundboard.SaveSoundboard()
+}
+
+func selectFile(w fyne.Window) {
     file_dialog := dialog.NewFileOpen(func (r fyne.URIReadCloser, err error) {
         chk(err)
         if r != nil && r.URI() != nil {
-            addAudio(r.URI().Path(), c)
+            addAudio(r.URI().Path())
         } 
     }, w)
     file_dialog.SetFilter(storage.NewExtensionFileFilter([]string{".mp3"}))
@@ -73,16 +83,22 @@ func DrawThings(a fyne.App) {
 
     w.Resize(fyne.NewSize(800, 800))
 
-    c := container.New(layout.NewGridWrapLayout(fyne.NewSize(300,100)))
+    c := container.New(layout.NewGridWrapLayout(fyne.NewSize(200,200)))
 
     openFileButton := widget.NewButton("Open audio file to use", func () {
         w2 := a.NewWindow("Select mp3 file")
-        selectFile(w2, c)
+        selectFile(w2)
     })
 
     displayProfiles(c)
 
+    audios_container = container.New(layout.NewGridWrapLayout(fyne.NewSize(200, 100)))
+
+    displayAudios()
+
     c.Add(openFileButton)
+
+    c.Add(audios_container)
 
     w.SetContent(c)
 

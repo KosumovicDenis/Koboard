@@ -30,8 +30,6 @@ func PlayAudio(audio_file string) {
 	decoder.FormatNone()
 	decoder.Format(rate, channels, mpg123.ENC_SIGNED_16)
 
-	portaudio.Initialize()
-	defer portaudio.Terminate()
 	out := make([]int16, 8192)
 	stream, err := portaudio.OpenDefaultStream(0, channels, float64(rate), len(out), &out)
 	chk(err)
@@ -55,10 +53,6 @@ func PlayAudio(audio_file string) {
 		default:
 		}
 	}
-}
-
-func GetVersion() int {
-    return portaudio.Version()
 }
 
 func PrintDefaultOutputDevice() error {
