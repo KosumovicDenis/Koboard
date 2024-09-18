@@ -5,12 +5,21 @@ import (
 	"github.com/KosumovicDenis/Koboard/internal/soundboard"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
 var profiles []*model.Profile
 
-func OpenSettings(a *fyne.App) {
+func OpenSettings(a fyne.App) {
+    w := a.NewWindow("Settings")
+
+    c := container.NewVBox()
+    displayProfiles(c)
+
+    w.SetContent(container.NewVScroll(c))
+
+    w.Show()
 }
 
 func displayProfiles(c *fyne.Container) {

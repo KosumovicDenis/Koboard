@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-var soundboard_data model.Soundboard
+var soundboardData model.Soundboard
 
 func StartSoundboard() {
     data, err := os.ReadFile("soundboard.protobuf")
@@ -18,16 +18,16 @@ func StartSoundboard() {
         initSoundboard()
     } else {
         chk(err)
-        err = proto.Unmarshal(data, &soundboard_data)
+        err = proto.Unmarshal(data, &soundboardData)
     } 
 }
 
 func GetProfiles(m *[]*model.Profile) {
-    *m = soundboard_data.Profiles
+    *m = soundboardData.Profiles
 }
 
 func initSoundboard() {
-    soundboard_data = model.Soundboard{
+    soundboardData = model.Soundboard{
         Profiles: []*model.Profile{
             {
                 Id: 1,
@@ -38,13 +38,13 @@ func initSoundboard() {
             },
         },
     }
-    data, err := proto.Marshal(&soundboard_data)
+    data, err := proto.Marshal(&soundboardData)
     chk(err)
     chk(os.WriteFile("soundboard.protobuf", data, 0600))
 }
 
 func SaveSoundboard() {
-    data, err := proto.Marshal(&soundboard_data)
+    data, err := proto.Marshal(&soundboardData)
     chk(err)
     chk(os.WriteFile("soundboard.protobuf", data, 0600))
 }
