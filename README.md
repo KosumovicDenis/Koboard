@@ -47,10 +47,10 @@ Contributions are welcome! If you have suggestions for improvements, feel free t
 ## Roadmap 🛤️
 
 - [x] Basic playback functionality
-- [ ] User interface for selecting and playing sounds
+- [x] User interface for selecting and playing sounds
 - [ ] Configuration file support
 - [ ] Volume control
-- [ ] Cross-platform support
+- [x] Cross-platform support
 
 ## License 📄
 
