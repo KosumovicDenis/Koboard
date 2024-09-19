@@ -12,9 +12,6 @@ func setSystemTrayMenu(a fyne.App, w fyne.Window) {
         m := fyne.NewMenu("Koboard",
             fyne.NewMenuItem("Show", func() {
                 w.Show()
-            }),
-            fyne.NewMenuItem("Quit", func() {
-                a.Quit()
             }))
         data, err := os.ReadFile("logo.png")
         chk(err)
