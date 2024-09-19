@@ -50,6 +50,8 @@ Contributions are welcome! If you have suggestions for improvements, feel free t
 - [x] User interface for selecting and playing sounds
 - [ ] Configuration file support
 - [ ] Volume control
+- [ ] Shortcuts
+- [ ] Multiple profiles
 - [x] Cross-platform support
 
 ## License 📄
