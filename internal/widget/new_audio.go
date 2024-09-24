@@ -20,10 +20,13 @@ func newAudioWindow(a fyne.App, c *fyne.Container) {
         selectFile(w2)
     })
 
-    formItem := widget.NewFormItem("Audio path", selectFileButton)
+    formItem := widget.NewFormItem("Sound path", selectFileButton)
+    soundName := widget.NewEntry()
+    formItem2 := widget.NewFormItem("Sound Name", soundName)
 
-    items := make([]*widget.FormItem, 1)
+    items := make([]*widget.FormItem, 2)
     items[0] = formItem
+    items[1] = formItem2
 
     form := dialog.NewForm("", "Enter", "Cancel", items, func(b bool) {
         if b {

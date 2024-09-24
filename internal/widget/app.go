@@ -20,7 +20,7 @@ func mainWindow(a fyne.App) {
     setSystemTrayMenu(a, w)
 
     vc := container.New(layout.NewVBoxLayout())
-    audioContainer := container.New(layout.NewGridLayoutWithColumns(2))
+    audioContainer := container.New(layout.NewGridLayoutWithColumns(3))
 
     newAudioButton := widget.NewButton("New sound", func () {
         newAudioWindow(a, audioContainer)
