@@ -31,7 +31,12 @@ func newAudioWindow(a fyne.App, c *fyne.Container) {
     form := dialog.NewForm("", "Enter", "Cancel", items, func(b bool) {
         if b {
             if strings.Compare(newAudioPath, "") != 0 {
-                addAudio(&newAudioPath, c)
+                if strings.Compare(soundName.Text, "") != 0 {
+                    addAudio(&newAudioPath, soundName.Text, c)
+                } else {
+                    pathArr := strings.Split(newAudioPath, "/")
+                    addAudio(&newAudioPath, pathArr[len(pathArr) - 1], c)
+                }
             }
         }
     }, w)

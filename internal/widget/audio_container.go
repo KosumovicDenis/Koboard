@@ -1,8 +1,6 @@
 package widget
 
 import (
-	"strings"
-
 	"github.com/KosumovicDenis/Koboard/internal/model"
 	"github.com/KosumovicDenis/Koboard/internal/soundboard"
 	"github.com/KosumovicDenis/Koboard/pkg/audio"
@@ -38,13 +36,12 @@ func displayAudios(c *fyne.Container) {
     }
 }
 
-func addAudio(path *string, c *fyne.Container) {
+func addAudio(path *string, name string, c *fyne.Container) {
     for _, p := range profiles {
         if p.Active {
-            arrayPath := strings.Split(*path, "/")
             audio := &model.Audio{
                     Id: 1,
-                    Name: arrayPath[len(arrayPath)-1],
+                    Name: name,
                     Path: *path,
                     Format: model.FileFormat_MP3,
             }

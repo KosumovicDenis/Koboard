@@ -16,11 +16,14 @@ func StartApp() {
 
 func mainWindow(a fyne.App) { 
     w := a.NewWindow("Koboard")
+
+    w.SetFixedSize(true)
+
     w.SetMaster()
     setSystemTrayMenu(a, w)
 
     vc := container.New(layout.NewVBoxLayout())
-    audioContainer := container.New(layout.NewGridLayoutWithColumns(3))
+    audioContainer := container.New(layout.NewAdaptiveGridLayout(3))
 
     newAudioButton := widget.NewButton("New sound", func () {
         newAudioWindow(a, audioContainer)
