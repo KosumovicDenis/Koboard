@@ -41,10 +41,10 @@ func newAudioWindow(a fyne.App, c *fyne.Container) {
         }
     }, w)
     
-    w.Show()
     form.Resize(fyne.NewSize(300, 250))
     form.Show()
     form.SetOnClosed(func() {
         w.Hide()
     })
+    w.Show()
 }

@@ -12,14 +12,16 @@ import (
 func addAllAudiosToConatiner(p *model.Profile, c *fyne.Container) {
     c.RemoveAll()
     for _, a := range p.GetAudios() {        
-        audioButton := widget.NewButton(a.Name , func() {
+		name := truncateString(a.Name, 25)
+        audioButton := widget.NewButton(name, func() {
             go audio.PlayAudio(a.Path)
         })
         c.Add(audioButton) 
     }
 }
 func addAudioToContainer(a *model.Audio,  c *fyne.Container) {
-    audioButton := widget.NewButton(a.Name , func() {
+	name := truncateString(a.Name, 25)
+    audioButton := widget.NewButton(name, func() {
         go audio.PlayAudio(a.Path)
     })
     c.Add(audioButton) 
@@ -53,4 +55,14 @@ func addAudio(path *string, name string, c *fyne.Container) {
 
 func chk(err error) {
     if err != nil { panic(err) }
+}
+
+func truncateString(s string, max int) string {
+    if len(s) > max {
+        if max > 3 {
+            return s[:max-3] + "..."
+        }
+        return s[:max] // Se max è troppo piccolo, non aggiungiamo "..."
+    }
+    return s
 }
