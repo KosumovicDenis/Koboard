@@ -9,35 +9,40 @@ import (
 )
 
 func StartApp() {
-    a := app.NewWithID("Koboard_1")
-    mainWindow(a)
-    a.Run()
+	a := app.NewWithID("Koboard_1")
+	mainWindow(a)
+	a.Run()
 }
 
-func mainWindow(a fyne.App) { 
-    w := a.NewWindow("Koboard")
+func mainWindow(a fyne.App) {
+	w := a.NewWindow("Koboard")
 
-    w.SetFixedSize(true)
+	w.SetFixedSize(true)
 
-    w.SetMaster()
-    setSystemTrayMenu(a, w)
+	w.SetMaster()
+	setSystemTrayMenu(a, w)
 
-    vc := container.New(layout.NewVBoxLayout())
-    audioContainer := container.New(layout.NewAdaptiveGridLayout(3))
+	vc := container.New(layout.NewVBoxLayout())
+	audioContainer := container.New(layout.NewAdaptiveGridLayout(3))
 
-    newAudioButton := widget.NewButton("New sound", func () {
-        newAudioWindow(a, audioContainer)
-    })
+	newAudioButton := widget.NewButton("New sound", func() {
+		newAudioWindow(a, audioContainer)
+	})
 
-    displayAudios(audioContainer)
+	settingsButton := widget.NewButton("Settings", func() {
+		OpenSettings(a)
+	})
 
-    vc.Add(newAudioButton)
-    vc.Add(audioContainer)
+	displayAudios(audioContainer)
 
-    w.SetContent(vc)
-    
-    w.SetCloseIntercept(func() {
-        w.Hide()
-    })
-    w.Show()
+	vc.Add(newAudioButton)
+	vc.Add(settingsButton)
+	vc.Add(audioContainer)
+
+	w.SetContent(vc)
+
+	w.SetCloseIntercept(func() {
+		w.Hide()
+	})
+	w.Show()
 }

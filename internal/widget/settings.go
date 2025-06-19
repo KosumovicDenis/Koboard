@@ -1,11 +1,14 @@
 package widget
 
 import (
+	"fmt"
+
 	"github.com/KosumovicDenis/Koboard/internal/model"
 	"github.com/KosumovicDenis/Koboard/internal/soundboard"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -14,8 +17,18 @@ var profiles []*model.Profile
 func OpenSettings(a fyne.App) {
     w := a.NewWindow("Settings")
 
+    w.Resize(fyne.NewSquareSize(250))
+
     c := container.NewVBox()
+    label := widget.NewLabel("Profiles:")
+    c.Add(label)
     displayProfiles(c)
+    
+    changeProfileButton := widget.NewButtonWithIcon("Change profile", theme.ConfirmIcon(), func () {
+        fmt.Println("TODO: Change profile")
+    })
+
+    c.Add(changeProfileButton)
 
     w.SetContent(container.NewVScroll(c))
 

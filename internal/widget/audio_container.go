@@ -9,8 +9,6 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-var audios = 0
-
 func addAllAudiosToConatiner(p *model.Profile, c *fyne.Container) {
     c.RemoveAll()
     for _, a := range p.GetAudios() {        

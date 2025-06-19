@@ -7,7 +7,7 @@ import (
     "encoding/binary"
 	"fmt"
 
-	"github.com/bobertlo/go-mpg123/mpg123"
+	"github.com/KosumovicDenis/go-mpg123/mpg123"
 	"github.com/gordonklaus/portaudio"
 )
 
@@ -29,7 +29,7 @@ func PlayAudio(audio_file string) {
 	// make sure output format does not change
 	decoder.FormatNone()
 	decoder.Format(rate, channels, mpg123.ENC_SIGNED_16)
-
+ 
 	out := make([]int16, 8192)
 	stream, err := portaudio.OpenDefaultStream(0, channels, float64(rate), len(out), &out)
 	chk(err)
